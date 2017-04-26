@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Vault SDK Android integration guideline &#8212; VaultSDK 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="vault-sdk-android-integration-guideline">
+<h1>Vault SDK Android integration guideline<a class="headerlink" href="#vault-sdk-android-integration-guideline" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="embedding-the-sdk-into-your-application-mandatory">
+<h2>1.  Embedding the SDK into Your Application (Mandatory)<a class="headerlink" href="#embedding-the-sdk-into-your-application-mandatory" title="Permalink to this headline">¶</a></h2>
+<p>The following steps are mandatory to measure installs and sessions.
+You can integrate the Vault SDK either automatically using Gradle’s Dependency Management or manually as an SDK.aar.</p>
+<div class="section" id="manually-include-jar-in-app">
+<h3>1.1 Manually include JAR In App<a class="headerlink" href="#manually-include-jar-in-app" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Download jar from <a class="reference external" href="http://www.google.co.in/">here</a></li>
+<li>Copy jar to your project’s libs folder</li>
+<li>Add following line to your_app -&gt; build.gradle</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="p">{</span>
+        <span class="nb">compile</span> <span class="n">fileTree</span><span class="p">(</span><span class="n">include</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;*.jar&#39;</span><span class="p">],</span> <span class="nb">dir</span><span class="p">:</span> <span class="s1">&#39;libs&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Sync and continue to <a class="reference internal" href="#id1">1.3</a> (No need to follow below step 1.2)</li>
+</ul>
+</div>
+<div class="section" id="add-the-vault-sdk-to-your-project">
+<h3>1.2  Add the Vault SDK to your Project<a class="headerlink" href="#add-the-vault-sdk-to-your-project" title="Permalink to this headline">¶</a></h3>
+<p>The simplest way to integrate the SDK into your project is by using Gradle&#8217;s Dependency.
+Adding Vault’s Android SDK Dependency:</p>
+<ol class="arabic simple">
+<li>Open your project (or create a new project), and then open your_app -&gt; build.gradle</li>
+</ol>
+<a class="reference internal image-reference" href="_images/folder_img.png"><img alt="alternate text" class="align-center" src="_images/folder_img.png" style="width: 500px; height: 400px;" /></a>
+<ol class="arabic simple" start="2">
+<li>Add this to Module-level /app/build.gradle before dependencies:</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">repositories</span> <span class="p">{</span>
+        <span class="n">mavenCentral</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Add the compile dependency with the latest version of the Vault SDK in the build.gradle file:</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="p">{</span>
+        <span class="nb">compile</span> <span class="s1">&#39;com.rappier:vault_sdk:version_code+@aar&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>version_code is latest version</p>
+</div>
+<div class="section" id="set-the-required-permissions">
+<span id="id1"></span><h3>1.3  Set the Required Permissions<a class="headerlink" href="#set-the-required-permissions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The AndroidManifest.xml should include the following permissions:</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">uses</span><span class="o">-</span><span class="n">permission</span> <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;android.permission.INTERNET&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">uses</span><span class="o">-</span><span class="n">permission</span> <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;android.permission.ACCESS_NETWORK_STATE&quot;</span> <span class="o">/&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>ACCESS_WIFI_STATE and READ_PHONE_STATE permissions are optional.</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">uses</span><span class="o">-</span><span class="n">permission</span> <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;android.permission.ACCESS_WIFI_STATE&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">uses</span><span class="o">-</span><span class="n">permission</span> <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;android.permission.READ_PHONE_STATE&quot;</span> <span class="o">/&gt;</span>
+</pre></div>
+</div>
+<p>Adding this permission enables the carrier to track IMEI.</p>
+</div>
+<div class="section" id="set-an-install-referrer-broadcastreceiver-in-androidmanifest-xml">
+<h3>1.4  Set an Install Referrer Broadcastreceiver in AndroidManifest.xml<a class="headerlink" href="#set-an-install-referrer-broadcastreceiver-in-androidmanifest-xml" title="Permalink to this headline">¶</a></h3>
+<p>receiver:
+Vault SDK provides a solution that broadcasts INSTALL_REFERRER to all other receivers automatically. In the AndroidManifest.xml, add the following receiver as the FIRST receiver for INSTALL_REFERRER, and ensure the receiver tag is within the application tag:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">receiver</span> <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;com.rappier.vaultsdk.vaultlib.mainsdkclasses.TrackerEventReceiver&quot;</span> <span class="n">android</span><span class="p">:</span><span class="n">exported</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">intent</span><span class="o">-</span><span class="nb">filter</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">action</span> <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;com.android.vending.INSTALL_REFERRER&quot;</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;/</span><span class="n">intent</span><span class="o">-</span><span class="nb">filter</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">receiver</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="embed-google-play-services-into-your-app">
+<h3>1.5  Embed Google Play Services into Your App<a class="headerlink" href="#embed-google-play-services-into-your-app" title="Permalink to this headline">¶</a></h3>
+<p>Collecting the Google Advertising ID (GAID) is essential for tracking campaigns across several channels including Facebook, Google and Twitter.
+To add Google Advertising ID:</p>
+<p>Install the Google Play Services SDK and import it into your project.
+Add the following entry to the AndroidManifest.xml as the last entry under application (before &lt;/application&gt;):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">meta</span><span class="o">-</span><span class="n">data</span> <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;com.google.android.gms.version&quot;</span><span class="n">android</span><span class="p">:</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;@integer/google_play_services_version&quot;</span> <span class="o">/&gt;</span>
+</pre></div>
+</div>
+<p>OR add following in build.gradle to avoid multidex exception:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="p">{</span>
+        <span class="nb">compile</span> <span class="s1">&#39;com.google.android.gms:play-services-ads:google_play_services_version&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Vault uses the Google Play Services library for retrieving the Google Advertising ID.</li>
+<li>Google Play Services 7.5 is the minimum requirement for the GCM Registration Token (which is used for our Uninstall measurement).  Vault recommends to always use the latest version.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="sdk-initialization-and-installation-event-minimum-requirement-for-tracking">
+<h2>2.  SDK Initialization and Installation Event (Minimum Requirement for Tracking)<a class="headerlink" href="#sdk-initialization-and-installation-event-minimum-requirement-for-tracking" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is the minimum requirement to begin tracking your app installs.</p>
+</div>
+<div class="section" id="initializing-the-sdk">
+<h3>2.1  Initializing the SDK<a class="headerlink" href="#initializing-the-sdk" title="Permalink to this headline">¶</a></h3>
+<p>To initialize the SDK, add the following code to your Application’s onCreate function:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Vault</span><span class="o">.</span><span class="n">initEvent</span><span class="p">(</span><span class="n">Context</span> <span class="n">context</span><span class="p">,</span> <span class="n">String</span> <span class="n">APIkey</span><span class="p">,</span> <span class="nb">int</span> <span class="n">AdvertiserId</span><span class="p">,</span> <span class="n">String</span> <span class="n">Password</span><span class="p">,</span> <span class="n">String</span> <span class="n">GoogleAddId</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>context - use getApplicationContext()</li>
+<li>APIkey is unique key get after registration in Vault system</li>
+<li>AdvertiserId  is a unique Id generated while registration in Vault system</li>
+<li>Password created while registration in Vault system</li>
+<li>GoogleAddId need to take and send from app.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">APIkey, AdvertiserId, Password will get while register on portal of Vault for tracking. If not already register then click <a class="reference external" href="http://www.google.co.in/">here</a> to register.</p>
+</div>
+<p>This API enables Vault to detect installations, sessions, and updates.</p>
+</div>
+<div class="section" id="reporting-background-sessions">
+<h3>2.2  Reporting Background Sessions<a class="headerlink" href="#reporting-background-sessions" title="Permalink to this headline">¶</a></h3>
+<p>If your app is a utility app running in the background you can use the API as described in here to measure sessions and retention within Vault.</p>
+</div>
+</div>
+<div class="section" id="in-app-events-tracking-api-optional">
+<h2>3.  In-App Events Tracking API (Optional)<a class="headerlink" href="#in-app-events-tracking-api-optional" title="Permalink to this headline">¶</a></h2>
+<p>There are two types of optional events contains in Vault sdk, 1) Sdk defined 2) Custom events</p>
+<div class="section" id="vault-sdk-defined-events">
+<h3>3.1  Vault Sdk Defined Events<a class="headerlink" href="#vault-sdk-defined-events" title="Permalink to this headline">¶</a></h3>
+<p>This API enables Vault to track some in app events that are already defined in sdk. App just need to call the methods of event and use it with specific events.</p>
+<p>Events:</p>
+<div class="section" id="register">
+<h4>3.1.1 Register<a class="headerlink" href="#register" title="Permalink to this headline">¶</a></h4>
+<p>If app contain registration/signup event this event will useful to track whether installed app made registration complete or not</p>
+<p>Syntax:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Vault</span><span class="o">.</span><span class="n">setRegisterEvent</span><span class="p">(</span><span class="n">Context</span> <span class="n">context</span><span class="p">,</span> <span class="n">String</span> <span class="n">APIkey</span><span class="p">,</span> <span class="nb">int</span> <span class="n">AdvertiserId</span><span class="p">,</span> <span class="n">String</span> <span class="n">Password</span><span class="p">,</span> <span class="n">String</span> <span class="n">GoogleAddId</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>context - use getApplicationContext()</li>
+<li>APIkey is unique key get after registration in Vault system</li>
+<li>AdvertiserId  is a unique Id generated while registration in Vault system</li>
+<li>Password created while registration in Vault system</li>
+<li>GoogleAddId need to take and send from app.</li>
+</ul>
+</div>
+<div class="section" id="purchase">
+<h4>3.1.2 Purchase<a class="headerlink" href="#purchase" title="Permalink to this headline">¶</a></h4>
+<p>If app contain purchase event, this event will useful to track purchase</p>
+<p>Syntax:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Vault</span><span class="o">.</span><span class="n">setPurchaseEvent</span><span class="p">(</span><span class="n">Context</span> <span class="n">context</span><span class="p">,</span> <span class="n">String</span> <span class="n">APIkey</span><span class="p">,</span> <span class="nb">int</span> <span class="n">AdvertiserId</span><span class="p">,</span> <span class="n">String</span> <span class="n">Password</span><span class="p">,</span> <span class="n">String</span> <span class="n">GoogleAddId</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>context - use getApplicationContext()</li>
+<li>APIkey is unique key get after registration in Vault system</li>
+<li>AdvertiserId  is a unique Id generated while registration in Vault system</li>
+<li>Password created while registration in Vault system</li>
+<li>GoogleAddId need to take and send from app.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="custom-events-advertiser-defined-events">
+<h3>3.2 Custom events(Advertiser defined events)<a class="headerlink" href="#custom-events-advertiser-defined-events" title="Permalink to this headline">¶</a></h3>
+<p>This API enables Vault to track post install events. These events are defined by the advertiser and include an event name, in addition to optional event values.
+Tracking in-app events helps you measure and analyze how loyal users discover your app, and attribute them to specific campaigns/media sources.</p>
+<p>Syntax:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Vault</span> <span class="n">setCustomEvent</span><span class="p">(</span><span class="n">Context</span> <span class="n">context</span><span class="p">,</span> <span class="n">String</span> <span class="n">APIkey</span><span class="p">,</span> <span class="nb">int</span> <span class="n">AdvertiserId</span><span class="p">,</span> <span class="n">String</span> <span class="n">Password</span><span class="p">,</span> <span class="n">String</span> <span class="n">GoogleAddId</span><span class="p">,</span> <span class="n">String</span> <span class="n">customEventId</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>context - use getApplicationContext()</li>
+<li>APIkey is unique key get after registration in Vault system</li>
+<li>AdvertiserId  is a unique Id generated while registration in Vault system</li>
+<li>Password created while registration in Vault system</li>
+<li>GoogleAddId need to take and send from app.</li>
+<li>customEventId event id generated while create custom event in Vault system</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Vault SDK Android integration guideline</a><ul>
+<li><a class="reference internal" href="#embedding-the-sdk-into-your-application-mandatory">1.  Embedding the SDK into Your Application (Mandatory)</a><ul>
+<li><a class="reference internal" href="#manually-include-jar-in-app">1.1 Manually include JAR In App</a></li>
+<li><a class="reference internal" href="#add-the-vault-sdk-to-your-project">1.2  Add the Vault SDK to your Project</a></li>
+<li><a class="reference internal" href="#set-the-required-permissions">1.3  Set the Required Permissions</a></li>
+<li><a class="reference internal" href="#set-an-install-referrer-broadcastreceiver-in-androidmanifest-xml">1.4  Set an Install Referrer Broadcastreceiver in AndroidManifest.xml</a></li>
+<li><a class="reference internal" href="#embed-google-play-services-into-your-app">1.5  Embed Google Play Services into Your App</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sdk-initialization-and-installation-event-minimum-requirement-for-tracking">2.  SDK Initialization and Installation Event (Minimum Requirement for Tracking)</a><ul>
+<li><a class="reference internal" href="#initializing-the-sdk">2.1  Initializing the SDK</a></li>
+<li><a class="reference internal" href="#reporting-background-sessions">2.2  Reporting Background Sessions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#in-app-events-tracking-api-optional">3.  In-App Events Tracking API (Optional)</a><ul>
+<li><a class="reference internal" href="#vault-sdk-defined-events">3.1  Vault Sdk Defined Events</a><ul>
+<li><a class="reference internal" href="#register">3.1.1 Register</a></li>
+<li><a class="reference internal" href="#purchase">3.1.2 Purchase</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#custom-events-advertiser-defined-events">3.2 Custom events(Advertiser defined events)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Dayanand.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,5 @@
+<receiver android:name="com.rappier.vaultsdk.vaultlib.mainsdkclasses.TrackerEventReceiver" android:exported="true">
+	<intent-filter>
+		<action android:name="com.android.vending.INSTALL_REFERRER" />
+	</intent-filter>
+</receiver>

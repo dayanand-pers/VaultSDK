@@ -1,0 +1,16 @@
+<receiver android:name="com.rappier.vaultsdk.vaultlib.mainsdkclasses.TrackerEventReceiver" android:exported="true">
+<intent-filter>
+<action android:name="com.android.vending.INSTALL_REFERRER" />
+</intent-filter>
+</receiver>
+
+
+
+dependencies {
+        compile 'com.google.android.gms:play-services-ads:google_play_services_version'
+    }
+
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
