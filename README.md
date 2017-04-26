@@ -17,6 +17,7 @@ Vault SDK Android integration guideline
 
 1.  Embedding the SDK into Your Application (Mandatory)
 =======================================================
+
 The following steps are mandatory to measure installs and sessions.
 You can integrate the Vault SDK either automatically using Gradle’s Dependency Management or manually as an SDK.aar.
 
