@@ -11,11 +11,6 @@ Vault SDK Android integration guideline
 ***************************************
 
 
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: Contents:
-
 1.  Embedding the SDK into Your Application (Mandatory)
 =======================================================
 The following steps are mandatory to measure installs and sessions.
